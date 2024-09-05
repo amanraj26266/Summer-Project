@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Quote Generator</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+  <style>
+    #champak {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 96vh;
+      width: 100%;
+      background-color: rgb(189, 199, 207);
+      margin: 0%;
+    }
+
+    #champak label {
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+
+    #champak input[type="time"] {
+      padding: 5px;
+      font-size: 16px;
+      width: 200px;
+      margin-bottom: 10px;
+    }
+
+    #champak button{
+      padding: 10px 20px;
+      font-size: 16px;
+      border-radius: 29px;
+    }
+    #champak button:hover{
+      color: rgb(165, 113, 113);
+      background-color: rgb(166, 190, 211);
+    }
+    .dayaben{
+      text-align: end;
+      margin: 8px;
+    }
+
+    /* Styles for the second interface */
+    body {
+      color: #333;
+      text-align: center;
+      font-family: "Helvetica", sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .jetha {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+      border: 7px solid #000;
+      background-color: #f1f1f1;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+      border-radius: 15px;
+    }
+
+    h1 {
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+
+    #quote {
+      font-size: 24px;
+      margin: 50px 0;
+      color: #000;
+    }
+
+    #quote i {
+      font-size: 32px;
+      margin: 0 10px;
+    }
+
+    #new-quote {
+      padding: 10px 20px;
+      font-size: 16px;
+      color: #fff;
+      background-color: #555;
+      border: none;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      border-radius: 10px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    }
+  </style>
+</head>
+<body>
+  <!-- First Interface -->
+  <div id="champak">
+    <label for="time-input">Enter the time:</label>
+    <input type="time" id="time-input" required>
+    <button id="proceed-btn">Proceed</button>
+    <div class="dayaben">please select your timming and then click on proceed-btn</div>
+  </div>
+
+  <!-- Second Interface -->
+  <div class="jetha" id="quote-container">
+    <h1 id="title"></h1>
+    <div id="quote">
+      <i class="tapu"></i>
+      <span id="quote-text"></span>
+      <i class="goli"></i>
+    </div>
+    <button id="new-quote">New Quote</button>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js"></script>
+  <script>
+   
+    const quotes = [
+      "The best way to find yourself is to lose yourself in the service of others. - Mahatma Gandhi",
+      "You must be the change you wish to see in the world. - Mahatma Gandhi",
+      "In a gentle way, you can shake the world. - Mahatma Gandhi",
+      "Arise, awake and stop not until the goal is achieved. - Swami Vivekananda",
+      "All power is within you; you can do anything and everything. - Swami Vivekananda",
+      "The mind is everything. What you think, you become. - Swami Vivekananda",
+      "Be the change that you wish to see in the world. - B.R. Ambedkar",
+      "Life should be great rather than long. - B.R. Ambedkar",
+      "Freedom of mind is the real freedom. - Dr. A.P.J. Abdul Kalam",
+      "Dream, dream, dream. Dreams transform into thoughts and thoughts result in action. - Dr. A.P.J. Abdul Kalam"
+    ];
+
+  
+    const colors = [
+      "rgb(255, 204, 204)",
+      "rgb(204, 255, 204)",
+      "rgb(204, 204, 255)",
+      "rgb(255, 255, 204)",
+      "rgb(255, 204, 255)",
+      "rgb(204, 255, 255)",
+      "rgb(204, 204, 204)",
+      "rgb(255, 221, 204)",
+      "rgb(221, 204, 255)",
+      "rgb(204, 255, 221)"
+    ];
+
+    function getRandomElement(arr) {
+      const randomIndex = Math.floor(Math.random() * arr.length);
+      return arr[randomIndex];
+    }
+
+    function setRandomQuote() {
+      const randomQuote = getRandomElement(quotes);
+      const randomColor = getRandomElement(colors);
+
+      document.body.style.backgroundColor = randomColor;
+      document.getElementById("quote-text").innerText = randomQuote;
+      document.getElementById("quote").style.color = "#000";
+      document.getElementById("new-quote").style.backgroundColor = randomColor;
+    }
+
+    function getGreeting(selectedHour) {
+      if (selectedHour >= 5 && selectedHour < 12) {
+        return "morning";
+      } else if (selectedHour >= 12 && selectedHour < 18) {
+        return "afternoon";
+      } else {
+        return "evening/night";
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+      const champak = document.getElementById("champak");
+      const quoteContainer = document.getElementById("quote-container");
+
+      champak.classList.add("visible");
+      quoteContainer.style.display = "none";
+
+      document.getElementById("proceed-btn").addEventListener("click", function(event) {
+        event.preventDefault();
+        const selectedTime = document.getElementById("time-input").value;
+        const selectedHour = parseInt(selectedTime.split(":")[0]);
+
+        const greeting = getGreeting(selectedHour);
+        document.getElementById("title").innerText = `Let's start our ${greeting} with a new quote`;
+
+        champak.style.display = "none";
+        quoteContainer.style.display = "block";
+        setRandomQuote();
+      });
+
+      document.getElementById("new-quote").addEventListener("click", setRandomQuote);
+    });
+  </script>
+</body>
+</html>
